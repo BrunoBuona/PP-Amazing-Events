@@ -16,6 +16,9 @@
   width: 350px;
   height: 80px;
 }
+.logo:hover{
+    filter: grayscale(0);
+}
 .nav-container {
   color: black;
   display: flex;
