@@ -47,16 +47,16 @@
 .banner {
   display: flex;
   height: 15vh;
-  text-shadow: 4px 2px 3px rgba(255, 2, 150, 0.74);
+  text-shadow: 3px 3px 3px rgba(99, 2, 255, 0.74);
   justify-content: center;
   align-items: center;
   background-repeat: no-repeat;
   background-size: cover;
-  background-image: url("https://pbs.twimg.com/media/DgXSPczXkAAeO7t.jpg:large");
+  background-color: #93a7ff;
   position: center;
 }
 .banner > h2 {
-  color: rgba(255, 179, 255, 0.877);
+  color: rgb(39, 6, 26);
   font-weight: bold;
   font-size: 56px;
 }
@@ -104,6 +104,9 @@
   width: 50px;
   height: 50px;
   padding: 5px;
+}
+.social-icons:hover{
+    filter: contrast(200%);
 }
 .title-footer {
   display: flex;
