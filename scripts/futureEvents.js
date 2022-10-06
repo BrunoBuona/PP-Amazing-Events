@@ -1,9 +1,9 @@
 // Reproducción automatica
 // Seleccionamos el ID del contenedor de TARJETAS
 const container = document.getElementById("contenedor");
-
 function printCard(elemento) {
   for (let event of events) {
+    if(event.date > currentDate){
     elemento.innerHTML += `
     <article class="card" style="width: 18rem">
         <img src="${event.image}" class="card-img-top" alt="${event.name}"/>
@@ -16,5 +16,6 @@ function printCard(elemento) {
     </article>
     `;
   }
+}
 }
 printCard(container)
