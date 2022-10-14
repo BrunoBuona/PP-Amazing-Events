@@ -28,7 +28,7 @@
     />
     <link href="./styles/style.css" rel="stylesheet" />
   </head>
-  <body>
+  <body >
     <header class="header-container">
       <div class="logo-container">
         <img class="logo" src="./assets/img/logo.png" alt="Logo" />
@@ -45,30 +45,21 @@
       <h2>HOME</h2>
     </div>
     <main class="main-container">
-      <div class="category-container">
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-          <label class="form-check-label" for="inlineCheckbox1">Category</label>
+      <div id="catcontainer" class="category-container">
+        
+
+        <div class="search">
+          <input
+            class="form-control"
+            type="search"
+            id="searchBar"
+            placeholder="Search"
+            aria-label="Search"
+          />
         </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
-          <label class="form-check-label" for="inlineCheckbox2">Category</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
-          <label class="form-check-label" for="inlineCheckbox3">Category</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="option4">
-          <label class="form-check-label" for="inlineCheckbox4">Category</label>
-        </div>
-        <form>
-          <input class="form-control " type="search" placeholder="Search" aria-label="Search">
-          <button class="noborder" type="submit"><img class="search-btn" src="https://uxwing.com/wp-content/themes/uxwing/download/user-interface/search-icon.png" alt="search"></button>
-        </form>
       </div>
       <div id="contenedor" class="cards-container">
-        <!--CARDS / JS -->   
+        <!--CARDS / JS -->
       </div>
     </main>
     <footer class="footer">
@@ -114,5 +105,6 @@
     ></script>
     <script src="./scripts/data.js"></script>
     <script src="./scripts/app.js"></script>
+    <script src="./scripts/filtro_busqueda.js"></script>
   </body>
 </html>

@@ -36,12 +36,16 @@ thead{
 .table{
     max-width: 100%;
     border: 2px solid black;
+
+}
+.semibold{
+  font-weight: bold;
 }
 th{
     padding-right: 0px!important;
     text-align: left;
 }
-tbody > tr > th{
+tbody > tr > td, th{
     border: 1px solid grey;
 }
 .nav-container > a {
@@ -80,8 +84,11 @@ tbody > tr > th{
   background-color: #ff5154;
   border: 2px solid black;
 }
+
 .search {
   border: 2px solid rgb(44, 153, 50);
+  width: 200px;
+  margin-top: 10px;
 }
 .cards {
   border: 2px solid rgb(198, 23, 204);
