@@ -2,6 +2,9 @@
 let cardsJs = document.getElementById("contenedor-js");
 let buscador = document.getElementById("search-js")
 let checkbox = document.getElementById("category-js")
+// Array Filtrado del Upcoming Events
+let upcoming = events.filter(event => event.date > currentDate);
+console.log(upcoming)
 
 // Impresion de cards
 function imprimir (array,contenedor){
@@ -17,7 +20,7 @@ function imprimir (array,contenedor){
     </div> 
   </article>`})};
           
-imprimir(events,cardsJs)
+imprimir(upcoming,cardsJs)
 
 // Sin coincidencias en la busqueda
 function errorAtSearch(array, contenedor){
@@ -29,7 +32,7 @@ function errorAtSearch(array, contenedor){
 // SEARCH BAR
 buscador.addEventListener("keyup", e => {
 
-  elementosFiltrados = events.filter(names => names.name.toLowerCase().includes(e.target.value.toLowerCase()))
+  elementosFiltrados = upcoming.filter(names => names.name.toLowerCase().includes(e.target.value.toLowerCase()))
 
   cardsJs.innerHTML = ''
 
@@ -40,7 +43,7 @@ buscador.addEventListener("keyup", e => {
 }
 )
 // CHECKBOXS CATEGORYS
-let categorias = Array.from(new Set(events.map(objeto => objeto.category)))
+let categorias = Array.from(new Set(upcoming.map(objeto => objeto.category)))
 categorias.forEach(nombreCategoria => {
   checkbox.innerHTML+=
     `<div class="form-check form-switch">
@@ -49,16 +52,21 @@ categorias.forEach(nombreCategoria => {
     </div>`})
 
 // CHECKBOX LOGIC
-let listChecked = []
+let listChecked2 = []
 checkbox.addEventListener(`change`, e=>{
     if (e.target.checked) {
-        listChecked = listChecked.concat(events.filter(evento=> evento.category.toLowerCase().includes(e.target.id.toLowerCase())))
-        console.log(listChecked);
+        listChecked2 = listChecked2.concat(upcoming.filter(evento=> evento.category.toLowerCase().includes(e.target.id.toLowerCase())))
         cardsJs.innerHTML = ''
-        imprimir(listChecked, cardsJs)}
-   else if(!e.target.checked){
-        listChecked = listChecked.filter(evento => !evento.category.toLowerCase().includes( e.target.id.toLowerCase() ) )
+        imprimir(listChecked2, cardsJs)
+      }
+   else if(!e.target.checked)
+     {
+        listChecked2 = listChecked2.filter(evento => !evento.category.toLowerCase().includes( e.target.id.toLowerCase() ) )
         cardsJs.innerHTML = ''
-        imprimir(listChecked, cardsJs)}
-   if (listChecked.length === 0){
-        imprimir(events,cardsJs)}})
+        imprimir(listChecked2, cardsJs)
+      }
+   if (listChecked2.length === 0){
+        imprimir(upcoming,cardsJs)
+      }
+    }
+  )

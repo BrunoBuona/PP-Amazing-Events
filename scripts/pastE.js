@@ -2,10 +2,12 @@
 let cardsJs = document.getElementById("contenedor-js");
 let buscador = document.getElementById("search-js")
 let checkbox = document.getElementById("category-js")
-
+// Array Filtrado de Past Events
+let past = events.filter((event) => event.date < currentDate);
 // Impresion de cards
 function imprimir (array,contenedor){
-  array.forEach (event => {contenedor.innerHTML += `
+  array.forEach (event => {
+    contenedor.innerHTML += `
     <article class="card cardD" style="width: 18rem">
     <img src="${event.image}" class="card-img-top" alt="${event.name}"/> 
     <div class="card-body">
@@ -16,7 +18,7 @@ function imprimir (array,contenedor){
     </div> 
   </article>`})};
           
-imprimir(events,cardsJs)
+imprimir(past,cardsJs)
 
 // Sin coincidencias en la busqueda
 function errorAtSearch(array, contenedor){
@@ -28,7 +30,7 @@ function errorAtSearch(array, contenedor){
 // SEARCH BAR
 buscador.addEventListener("keyup", e => {
 
-  elementosFiltrados = events.filter(names => names.name.toLowerCase().includes(e.target.value.toLowerCase()))
+  elementosFiltrados = past.filter(names => names.name.toLowerCase().includes(e.target.value.toLowerCase()))
 
   cardsJs.innerHTML = ''
 
@@ -39,7 +41,7 @@ buscador.addEventListener("keyup", e => {
 }
 )
 // CHECKBOXS CATEGORYS
-let categorias = Array.from(new Set(events.map(objeto => objeto.category)))
+let categorias = Array.from(new Set(past.map(objeto => objeto.category)))
 categorias.forEach(nombreCategoria => {
   checkbox.innerHTML+=
     `<div class="form-check form-switch">
@@ -48,16 +50,21 @@ categorias.forEach(nombreCategoria => {
     </div>`})
 
 // CHECKBOX LOGIC
-let listChecked = []
+let listChecked3 = []
 checkbox.addEventListener(`change`, e=>{
     if (e.target.checked) {
-        listChecked = listChecked.concat(events.filter(evento=> evento.category.toLowerCase().includes(e.target.id.toLowerCase())))
-        console.log(listChecked);
+        listChecked3 = listChecked3.concat(past.filter(evento=> evento.category.toLowerCase().includes(e.target.id.toLowerCase())))
         cardsJs.innerHTML = ''
-        imprimir(listChecked, cardsJs)}
-   else if(!e.target.checked){
-        listChecked = listChecked.filter(evento => !evento.category.toLowerCase().includes( e.target.id.toLowerCase() ) )
+        imprimir(listChecked3, cardsJs)
+      }
+   else if(!e.target.checked)
+     {
+        listChecked3 = listChecked3.filter(evento => !evento.category.toLowerCase().includes( e.target.id.toLowerCase() ) )
         cardsJs.innerHTML = ''
-        imprimir(listChecked, cardsJs)}
-   if (listChecked.length === 0){
-        imprimir(events,cardsJs)}})
+        imprimir(listChecked3, cardsJs)
+      }
+   if (listChecked3.length === 0){
+        imprimir(past,cardsJs)
+      }
+    }
+  )
