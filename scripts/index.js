@@ -1,9 +1,13 @@
-// DOM
+// ================================================================== //
+// =========================== DOM ================================== //
+
 let cardsJs = document.getElementById("contenedor-js");
 let buscador = document.getElementById("search-js")
 let checkbox = document.getElementById("category-js")
 
-// Impresion de cards
+// ================================================================== //
+// =================== IMPRESION DE CARDS  ========================== //
+
 function imprimir (array,contenedor){
   array.forEach (ex => {contenedor.innerHTML += `
     <article class="card cardD" style="width: 18rem">
@@ -15,25 +19,33 @@ function imprimir (array,contenedor){
     <a href="./pages/onlycard.html?id=${ex._id}" class="btn btn-danger">See more</a>
     </div> 
   </article>`})};
-          
+
 imprimir(events,cardsJs)
 
-// Sin coincidencias en la busqueda
+// ================================================================== //
+// ====================== FUNCION DE RE IMPRESION =================== //
+
+function actualizacionDeImpresion(contenedor, array) {
+  contenedor.innerHTML = ''
+  imprimir(array, contenedor)
+  if(array == listChecked){
+  }
+  else{
+    errorAtSearch(array, contenedor)}
+}
+
+// ================================================================== //
+// ====================== FUNCION DE ERROR ========================== //
+
 function errorAtSearch(array, contenedor){
   if(array <= 0){
     contenedor.innerHTML=`<h2>Sin coincidencias</h2>`
   }
 }
 
-// SEARCH BAR
-buscador.addEventListener("input", e => {
-  elementosFiltrados = events.filter(names => names.name.toLowerCase().includes(e.target.value.toLowerCase()))
-  cardsJs.innerHTML = ''
-  errorAtSearch(elementosFiltrados, cardsJs)
-  imprimir(elementosFiltrados,cardsJs)
-}
-)
-// CHECKBOXS CATEGORYS
+// ================================================================== //
+// =================== IMPRESION DE CATEGORIAS ====================== //
+
 let categorias = Array.from(new Set(events.map(objeto => objeto.category)))
 categorias.forEach(nombreCategoria => {
   checkbox.innerHTML+=
@@ -42,17 +54,33 @@ categorias.forEach(nombreCategoria => {
     <label class="form-check-label" for="flexSwitchCheckDefault">${nombreCategoria}</label>
     </div>`})
 
+// ================================================================== //
+// =============== BARRA DE NAVEGACION (EVENTO) ===================== //
 
-// CHECKBOX LOGIC
+buscador.addEventListener("input", e => {
+  elementosFiltrados = events.filter(names => names.name.toLowerCase().includes(e.target.value.toLowerCase()))
+  actualizacionDeImpresion(cardsJs, elementosFiltrados)
+  }
+) 
+
+// ================================================================== //
+// ===================== CHECKBOX (EVENTO) ========================== //
+
 let listChecked = []
 checkbox.addEventListener(`change`, e=>{
     if (e.target.checked) {
         listChecked = listChecked.concat(events.filter(evento=> evento.category.toLowerCase().includes(e.target.id.toLowerCase())))
-        cardsJs.innerHTML = ''
-        imprimir(listChecked, cardsJs)}
+        actualizacionDeImpresion(cardsJs, listChecked)
+      }
+
    else if(!e.target.checked){
         listChecked = listChecked.filter(evento => !evento.category.toLowerCase().includes( e.target.id.toLowerCase() ) )
-        cardsJs.innerHTML = ''
-        imprimir(listChecked, cardsJs)}
-   if (listChecked.length === 0){
-        imprimir(events,cardsJs)}})
+        actualizacionDeImpresion(cardsJs, listChecked)
+      }
+   if (listChecked.length === 0)
+   {
+    imprimir(events,cardsJs)
+   }})
+
+
+
