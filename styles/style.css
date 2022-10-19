@@ -97,6 +97,7 @@ tbody > tr > td, th{
   display: flex;
   height: auto;
   flex-direction: column;
+  min-height: 65vh;
 
 }
 .category-container {
@@ -194,33 +195,44 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 .cards-container2{
     display: flex;
-    flex-direction: row;
+    flex-direction: row!important;
     justify-content: center;
     align-items: center;
     height: 65vh;
+    flex-grow: 1;
 }
 .only_card{
     display: flex;
-    flex-direction: row;
+    flex-direction: row!important;
     justify-content: center;
     align-items: center;
     text-align: center;
     box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.767);
     border: 2px solid black;
+    width: 700px;
 }
 .card-title2{
     padding: 0px;
+    margin: 10px;
+    margin-right: 20px;
 }
 .card-text2{
-    padding: 20px;
+    padding: 1px;
+    padding-left: 10px;
+    padding-right: 15px;
+    font-size: 12px;
+    margin: 10px;
+    margin-right: 20px;
 }
 .card-body2{
     height: 100%;
+    width: 50%;
 }
 .card-img2{
     width: 420px!important;
     object-fit: cover;
     height: 250px;
+    margin-right: 20px;
 }
 .button-cardsx{
     display: flex;
@@ -251,6 +263,10 @@ input[type="search"]::-webkit-search-cancel-button {
     height: auto;
   }
 }
+.cards-container2{
+  height: auto;
+  min-height: 75vh;
+}
 .form-container{
     height: 65vh;
     padding: 20px;
@@ -272,7 +288,10 @@ form{
     align-items: center;
     justify-content: center;
 }
-
+.only_card{
+  flex-direction: column;
+  width: fit-content;
+}
 
 
 
@@ -280,6 +299,7 @@ form{
   .nav-container {
     flex-wrap: wrap;
   }
+  
   .footer {
     flex-direction: column;
     height: auto;

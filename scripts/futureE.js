@@ -16,7 +16,7 @@ function imprimir (array,contenedor){
     <h5 class="card-title">${event.name}</h5>
     <p class="card-text">${event.description}</p>
     <a class="btn btn-dark">U$D ${event.price}</a>
-    <a href="./pages/onlycard.html" class="btn btn-danger">See more</a>
+    <a href="./onlycard.html?id=${event._id}" class="btn btn-danger">See more</a>
     </div> 
   </article>`})};
           
