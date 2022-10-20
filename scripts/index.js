@@ -6,6 +6,16 @@ let buscador = document.getElementById("search-js")
 let checkbox = document.getElementById("category-js")
 
 // ================================================================== //
+// =========================== ASYNC ================================== //
+async function fetchApi(){
+  let events2 = await fetch('https://amazing-events.herokuapp.com/api/events')
+  console.log(events2)
+  events2 = await events2.json()
+  eventx = events2.events
+  imprimir(eventx, cardsJs)
+}
+fetchApi()
+// ================================================================== //
 // =================== IMPRESION DE CARDS  ========================== //
 
 function imprimir (array,contenedor){
@@ -20,7 +30,7 @@ function imprimir (array,contenedor){
     </div> 
   </article>`})};
 
-imprimir(events,cardsJs)
+
 
 // ================================================================== //
 // ====================== FUNCION DE RE IMPRESION =================== //
@@ -28,7 +38,7 @@ imprimir(events,cardsJs)
 function actualizacionDeImpresion(contenedor, array) {
   contenedor.innerHTML = ''
   imprimir(array, contenedor)
-  if(array == listChecked){
+  if(array == listChecked){ // Aca deberia haber puesto un false, dado que esta condicion nunca se va a cumplir de todas maneras.
   }
   else{
     errorAtSearch(array, contenedor)}
@@ -57,11 +67,18 @@ categorias.forEach(nombreCategoria => {
 // ================================================================== //
 // =============== BARRA DE NAVEGACION (EVENTO) ===================== //
 
+
 buscador.addEventListener("input", e => {
-  elementosFiltrados = events.filter(names => names.name.toLowerCase().includes(e.target.value.toLowerCase()))
+  if(listChecked.length > 0){
+  elementosFiltrados = listChecked.filter(names => names.name.toLowerCase().includes(e.target.value.toLowerCase()))
   actualizacionDeImpresion(cardsJs, elementosFiltrados)
   }
-) 
+  else{
+    elementosFiltrados = events.filter(names => names.name.toLowerCase().includes(e.target.value.toLowerCase()))
+  actualizacionDeImpresion(cardsJs, elementosFiltrados)
+  }
+})
+
 
 // ================================================================== //
 // ===================== CHECKBOX (EVENTO) ========================== //
