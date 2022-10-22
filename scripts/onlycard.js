@@ -112,13 +112,16 @@ function idPrinter2(par1, container) {
 }
 
 function filterId() {
-        let filtro = []
-        let theId = Number(location.search.slice(4))
-        filtro = events.find(e => e._id === theId)
-        if(filtro.date < currentDate){
-            idPrinter(filtro, onlycard2)
-        }
-        else{
-            idPrinter2(filtro, onlycard2)
-        }}
+  let filtro = []
+  let theId = Number(location.search.slice(4))
+  filtro = events.filter(e => e._id === theId)
+  for(let event of filtro){
+
+  if(event.date < currentDate){
+      idPrinter(filtro, onlycard2)
+  }
+  else{
+      idPrinter2(filtro, onlycard2)
+  }}
+}
 filterId()

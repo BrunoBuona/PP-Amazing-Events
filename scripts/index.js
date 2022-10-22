@@ -15,6 +15,7 @@ async function fetchApi(){
   imprimir(eventx, cardsJs)
 }
 fetchApi()
+
 // ================================================================== //
 // =================== IMPRESION DE CARDS  ========================== //
 
@@ -31,7 +32,7 @@ function imprimir (array,contenedor){
   </article>`})};
 
 
-
+  imprimir(events, cardsJs)
 // ================================================================== //
 // ====================== FUNCION DE RE IMPRESION =================== //
 
@@ -69,16 +70,18 @@ categorias.forEach(nombreCategoria => {
 
 
 buscador.addEventListener("input", e => {
+  let inputUser = e.target.value.toLowerCase()
   if(listChecked.length > 0){
-  elementosFiltrados = listChecked.filter(names => names.name.toLowerCase().includes(e.target.value.toLowerCase()))
+  elementosFiltrados = listChecked.filter(names => names.name.toLowerCase().includes(inputUser))
   actualizacionDeImpresion(cardsJs, elementosFiltrados)
   }
   else{
-    elementosFiltrados = events.filter(names => names.name.toLowerCase().includes(e.target.value.toLowerCase()))
+    elementosFiltrados = events.filter(names => names.name.toLowerCase().includes(inputUser))
   actualizacionDeImpresion(cardsJs, elementosFiltrados)
   }
 })
 
+// Nico sama me dijo que use el value del buscador <3 siempre que lo necesite
 
 // ================================================================== //
 // ===================== CHECKBOX (EVENTO) ========================== //
@@ -94,10 +97,8 @@ checkbox.addEventListener(`change`, e=>{
         listChecked = listChecked.filter(evento => !evento.category.toLowerCase().includes( e.target.id.toLowerCase() ) )
         actualizacionDeImpresion(cardsJs, listChecked)
       }
-   if (listChecked.length === 0)
-   {
-    imprimir(events,cardsJs)
-   }})
+   if (listChecked.length === 0){imprimir(events,cardsJs)}
+  })
 
 
 
