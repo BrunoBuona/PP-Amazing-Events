@@ -1,9 +1,5 @@
 # amazing-events
-TASK 3 | MINDHUB
+Task IV -
 
-
-PENDIENTE:
-
-* FILTRO CRUZADO
-
-
+Waiting for Update:
+- Dynamic Data in Statistics
