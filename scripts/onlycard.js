@@ -1,8 +1,8 @@
 let onlycard2 = document.getElementById("cardCjs")
 
 function idPrinter(i, container) {
-        container.innerHTML +=
-        `
+  container.innerHTML +=
+    `
         <article class="only_card" >
         <img
           src="${i.image}"
@@ -33,11 +33,11 @@ function idPrinter(i, container) {
         </div>
       </article>
         `
-    }
+}
 
 function idPrinter2(i, container) {
-        container.innerHTML +=
-        `
+  container.innerHTML +=
+    `
         <article class="only_card" >
         <img
           src="${i.image}"
@@ -68,28 +68,28 @@ function idPrinter2(i, container) {
         </div>
       </article>
         `
-      }
-    
+}
+
 let eventos;
 fetch('https://amazing-events.herokuapp.com/api/events')
-    .then( data => data.json() )
-    .then( data => {
-        fecha = data.currentDate
-        eventos = data.events;
-       printid()
-    } )
-    .catch( error => console.log(error));
-function printid(){
+  .then(data => data.json())
+  .then(data => {
+    fecha = data.currentDate
+    eventos = data.events;
+    printid()
+  })
+  .catch(error => console.log(error));
+function printid() {
   let filtro = []
   let theId = location.search.slice(4)
-
-filtro = eventos.find(e => e._id === theId)
-      if(filtro.date < fecha){
-      idPrinter(filtro, onlycard2)
+  filtro = eventos.find(e => e._id === theId)
+  if (filtro.date < fecha) {
+    idPrinter(filtro, onlycard2)
   }
-  else{
-      idPrinter2(filtro, onlycard2)
-  }}
+  else {
+    idPrinter2(filtro, onlycard2)
+  }
+}
 
 
 

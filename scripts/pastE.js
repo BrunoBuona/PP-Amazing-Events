@@ -7,24 +7,24 @@ let eventos;
 let fecha;
 let past;
 fetch('https://amazing-events.herokuapp.com/api/events')
-    .then( data => data.json() )
-    .then( data => {
-        fecha = data.currentDate
-        eventos = data.events;
-        console.log(eventos)
-        past = eventos.filter((event) => event.date < fecha);
-        console.log(past)
-        crearCheckbox(past, $categorys)
-        imprimirCards(past, $cards)
-        $search.addEventListener('keyup', filtrar)
-        $categorys.addEventListener('change', filtrar)
-    } )
-    .catch( error => console.log(error));
+  .then(data => data.json())
+  .then(data => {
+    fecha = data.currentDate
+    eventos = data.events;
+    console.log(eventos)
+    past = eventos.filter((event) => event.date < fecha);
+    console.log(past)
+    crearCheckbox(past, $categorys)
+    imprimirCards(past, $cards)
+    $search.addEventListener('keyup', filtrar)
+    $categorys.addEventListener('change', filtrar)
+  })
+  .catch(error => console.log(error));
 
 // DOM | CheckBox
-function crearCheckbox( eventos, contenedor){
+function crearCheckbox(eventos, contenedor) {
   let fn = eventos => eventos.category
-  let categorias = new Set(eventos.filter( fn ).map( fn ))
+  let categorias = new Set(eventos.filter(fn).map(fn))
   console.log(categorias)
   categorias.forEach(par => {
     contenedor.innerHTML += `
@@ -32,13 +32,14 @@ function crearCheckbox( eventos, contenedor){
     <input class="form-check-input" value="${par}" type="checkbox" role="switch" id="${par}">${par}
     </label>
     `
-  })}
+  })
+}
 
-  function crearCard(eventos){
-    let div = document.createElement('DIV')
-    div.classList = 'class="card cardD'
-    div.style = 'width: 14rem'
-    div.innerHTML+=`
+function crearCard(eventos) {
+  let div = document.createElement('DIV')
+  div.classList = 'class="card cardD'
+  div.style = 'width: 14rem'
+  div.innerHTML += `
     <img src="${eventos.image}" class="card-img-top" alt="${eventos.name}"/> 
     <div class="card-body">
     <h5 class="card-title">${eventos.name}</h5>
@@ -47,22 +48,23 @@ function crearCheckbox( eventos, contenedor){
     <a href="./onlycard.html?id=${eventos._id}" class="btn btn-danger">See more</a>
     </div> 
     `
-    return div
-  }
-  function imprimirCards(eventos, contenedor){
-    contenedor.innerHTML = ''
-    if(eventos.length > 0){
+  return div
+}
+function imprimirCards(eventos, contenedor) {
+  contenedor.innerHTML = ''
+  if (eventos.length > 0) {
     let fragment = document.createDocumentFragment()
     eventos.forEach(eventos => fragment.appendChild(crearCard(eventos)))
-    contenedor.appendChild(fragment)}
-    else{
-      contenedor.innerHTML= `<h2>Sin coincidencias...</h2>`
-    }
+    contenedor.appendChild(fragment)
   }
+  else {
+    contenedor.innerHTML = `<h2>Sin coincidencias...</h2>`
+  }
+}
 
-function filtrar(){
-   let checked = [...document.querySelectorAll( 'input[type="checkbox"]:checked' )].map( ele => ele.value)
-   let filtradosPorCategoria = past.filter( eventos => checked.includes( eventos.category ) || checked.length == 0) 
-   let filtradosPorSearch = filtradosPorCategoria.filter( value => value.name.toLowerCase().includes( $search.value.toLowerCase() ) )
-   imprimirCards(filtradosPorSearch, $cards)
+function filtrar() {
+  let checked = [...document.querySelectorAll('input[type="checkbox"]:checked')].map(ele => ele.value)
+  let filtradosPorCategoria = past.filter(eventos => checked.includes(eventos.category) || checked.length == 0)
+  let filtradosPorSearch = filtradosPorCategoria.filter(value => value.name.toLowerCase().includes($search.value.toLowerCase()))
+  imprimirCards(filtradosPorSearch, $cards)
 }
