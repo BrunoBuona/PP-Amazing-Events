@@ -1,72 +1,68 @@
-// DOM
-let cardsJs = document.getElementById("contenedor-js");
-let buscador = document.getElementById("search-js")
-let checkbox = document.getElementById("category-js")
-// Array Filtrado de Past Events
-let past = events.filter((event) => event.date < currentDate);
-// Impresion de cards
-function imprimir (array,contenedor){
-  array.forEach (event => {
+// EL NAVEGADOR LO TENES FORZADO A BLACKIE.
+const $cards = document.getElementById("contenedor-js");
+const $search = document.getElementById("search-js");
+const $categorys = document.getElementById("category-js");
+// Async
+let eventos;
+let fecha;
+let past;
+fetch('https://amazing-events.herokuapp.com/api/events')
+    .then( data => data.json() )
+    .then( data => {
+        fecha = data.currentDate
+        eventos = data.events;
+        console.log(eventos)
+        past = eventos.filter((event) => event.date < fecha);
+        console.log(past)
+        crearCheckbox(past, $categorys)
+        imprimirCards(past, $cards)
+        $search.addEventListener('keyup', filtrar)
+        $categorys.addEventListener('change', filtrar)
+    } )
+    .catch( error => console.log(error));
+
+// DOM | CheckBox
+function crearCheckbox( eventos, contenedor){
+  let fn = eventos => eventos.category
+  let categorias = new Set(eventos.filter( fn ).map( fn ))
+  console.log(categorias)
+  categorias.forEach(par => {
     contenedor.innerHTML += `
-    <article class="card cardD" style="width: 18rem">
-    <img src="${event.image}" class="card-img-top" alt="${event.name}"/> 
+    <label class="form-check-label" for="${par}">
+    <input class="form-check-input" value="${par}" type="checkbox" role="switch" id="${par}">${par}
+    </label>
+    `
+  })}
+
+  function crearCard(eventos){
+    let div = document.createElement('DIV')
+    div.classList = 'class="card cardD'
+    div.style = 'width: 14rem'
+    div.innerHTML+=`
+    <img src="${eventos.image}" class="card-img-top" alt="${eventos.name}"/> 
     <div class="card-body">
-    <h5 class="card-title">${event.name}</h5>
-    <p class="card-text">${event.description}</p>
-    <a class="btn btn-dark">U$D ${event.price}</a>
-    <a href="./onlycard.html?id=${event._id}" class="btn btn-danger">See more</a>
+    <h5 class="card-title">${eventos.name}</h5>
+    <p class="card-text">${eventos.description}</p>
+    <a class="btn btn-dark">U$D ${eventos.price}</a>
+    <a href="./onlycard.html?id=${eventos._id}" class="btn btn-danger">See more</a>
     </div> 
-  </article>`})};
-          
-imprimir(past,cardsJs)
-
-// Sin coincidencias en la busqueda
-function errorAtSearch(array, contenedor){
-  if(array <= 0){
-    contenedor.innerHTML=`<h2>Sin coincidencias</h2>`
+    `
+    return div
   }
-}
-
-// SEARCH BAR
-buscador.addEventListener("keyup", e => {
-
-  elementosFiltrados = past.filter(names => names.name.toLowerCase().includes(e.target.value.toLowerCase()))
-
-  cardsJs.innerHTML = ''
-
-  errorAtSearch(elementosFiltrados, cardsJs)
-
-  imprimir(elementosFiltrados,cardsJs)
-
-}
-)
-// CHECKBOXS CATEGORYS
-let categorias = Array.from(new Set(past.map(objeto => objeto.category)))
-categorias.forEach(nombreCategoria => {
-  checkbox.innerHTML+=
-    `<div class="form-check form-switch">
-    <input class="form-check-input" id="${nombreCategoria}" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-    <label class="form-check-label" for="flexSwitchCheckDefault">${nombreCategoria}</label>
-    </div>`})
-
-// CHECKBOX LOGIC
-let listChecked3 = []
-checkbox.addEventListener(`change`, e=>{
-    if (e.target.checked) {
-        listChecked3 = listChecked3.concat(past.filter(evento=> evento.category.toLowerCase().includes(e.target.id.toLowerCase())))
-        cardsJs.innerHTML = ''
-        imprimir(listChecked3, cardsJs)
-      }
-   else if(!e.target.checked)
-     {
-        listChecked3 = listChecked3.filter(evento => !evento.category.toLowerCase().includes( e.target.id.toLowerCase() ) )
-        cardsJs.innerHTML = ''
-        imprimir(listChecked3, cardsJs)
-      }
-   if (listChecked3.length === 0){
-        imprimir(past,cardsJs)
-      }
+  function imprimirCards(eventos, contenedor){
+    contenedor.innerHTML = ''
+    if(eventos.length > 0){
+    let fragment = document.createDocumentFragment()
+    eventos.forEach(eventos => fragment.appendChild(crearCard(eventos)))
+    contenedor.appendChild(fragment)}
+    else{
+      contenedor.innerHTML= `<h2>Sin coincidencias...</h2>`
     }
-  )
+  }
 
-  // PASAR COSAS SUELTAS A FUNCIONES
+function filtrar(){
+   let checked = [...document.querySelectorAll( 'input[type="checkbox"]:checked' )].map( ele => ele.value)
+   let filtradosPorCategoria = past.filter( eventos => checked.includes( eventos.category ) || checked.length == 0) 
+   let filtradosPorSearch = filtradosPorCategoria.filter( value => value.name.toLowerCase().includes( $search.value.toLowerCase() ) )
+   imprimirCards(filtradosPorSearch, $cards)
+}

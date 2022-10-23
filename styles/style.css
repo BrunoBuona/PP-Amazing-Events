@@ -100,6 +100,32 @@ tbody > tr > td, th{
   min-height: 65vh;
 
 }
+.main-container2 {
+  display: flex;
+  height: auto;
+  flex-direction: column;
+  min-height: 65vh;
+  flex-grow: 1;
+
+}
+.main-container2 > form{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+}
+.form-container{
+  display: flex;
+  height: auto;
+  align-items: center;
+  justify-content: center;
+  min-height: 65vh;
+  flex-grow: 1;
+
+}
+.form-group{
+  width: 300px;
+}
 .category-container {
   display: flex;
   align-items: center;
@@ -267,11 +293,11 @@ input[type="search"]::-webkit-search-cancel-button {
   height: auto;
   min-height: 75vh;
 }
-.form-container{
+.category-container > .form-container{
     height: 75vh;
     padding: 20px;
 }
-.form-container input{
+.category-container > .form-container input{
     width: 300px;
 }
 .about-text{
@@ -282,7 +308,7 @@ input[type="search"]::-webkit-search-cancel-button {
     align-items: center;
     justify-content: center;
 }
-form{
+.category-container > form{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -312,7 +338,9 @@ form{
   padding: 0px;
 }}
 
-
+.main-container2{
+  min-height: 85vh;
+}
 
 @media screen and (max-width: 450px) {
   .nav-container {
@@ -335,7 +363,7 @@ form{
 
 @media screen and (min-width: 2000px) {
   .main-container {
-    height: 95vh;
+    height: auto;
   }
 }
 
