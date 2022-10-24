@@ -1,4 +1,3 @@
-// EL NAVEGADOR LO TENES FORZADO A BLACKIE.
 const $cards = document.getElementById("contenedor-js");
 const $search = document.getElementById("search-js");
 const $categorys = document.getElementById("category-js");
