@@ -61,10 +61,7 @@ function logicaTablaUno() {
 }
 
 function stats(fechaEvento, propiedad, contenedor) {
-  fechaEvento.map(evento => {
-    evento.ganancia = evento[propiedad] * evento.price
-    evento.percent = (100 * evento[propiedad] / evento.capacity).toFixed(0)
-  })
+  fechaEvento.map(evento => {evento.ganancia = evento[propiedad] * evento.price})
   let categories = Array.from(new Set(fechaEvento.map(evento => evento.category)))
   let stats = categories.map(cat => {
     let filter = fechaEvento.filter(evento => evento.category === cat)
