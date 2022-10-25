@@ -4,7 +4,7 @@ const $categorys = document.getElementById("category-js");
 
 // Async
 let eventos;
-let favoritos =  []
+// let favoritos =  []
 fetch('https://mh-amazing.herokuapp.com/amazing')
   .then(data => data.json())
   .then(data => {
@@ -40,7 +40,6 @@ function crearCard(eventos) {
     <p class="card-text">${eventos.description}</p>
     <a class="btn btn-dark">U$D ${eventos.price}</a>
     <a href="./pages/onlycard.html?id=${eventos.id}" class="btn btn-danger">See more</a>
-    <button class="fav" id="${eventos.name}" onclick="handlerFav('${eventos.id}')"><img class="fav"src="https://static.vecteezy.com/system/resources/previews/001/189/166/non_2x/star-png.png"></button> 
     </div> 
     `
   return div
@@ -48,7 +47,7 @@ function crearCard(eventos) {
 function imprimirCards(eventos, contenedor) {
   contenedor.innerHTML = ''
   if (eventos.length > 0) {
-    let fragment = document.createDocumentFragment() //  Es el cache
+    let fragment = document.createDocumentFragment()
     eventos.forEach(eventos => fragment.appendChild(crearCard(eventos)))
     contenedor.appendChild(fragment)
   }
@@ -59,20 +58,18 @@ function imprimirCards(eventos, contenedor) {
 
 function filtrar() {
   let checked = [...document.querySelectorAll('input[type="checkbox"]:checked')].map(ele => ele.value)
-  console.log(checked)
   let filtradosPorCategoria = eventos.filter(eventos => checked.includes(eventos.category) || checked.length == 0)
-  // Aca en la categoria filtradosPorCategoria estoy guardando un filtro que se hace sobre eventos.
-  console.log(filtradosPorCategoria)
   let filtradosPorSearch = filtradosPorCategoria.filter(iteracion => iteracion.name.toLowerCase().includes($search.value.toLowerCase()))
   imprimirCards(filtradosPorSearch, $cards)
 }
 
-function handlerFav(id) {
-  if (favoritos.includes(id)) {
-     favoritos = favoritos.filter(e => e !== id)
-     localStorage.setItem('favoritos', JSON.stringify(favoritos))} 
-     else {
-     favoritos.push(id)
-     localStorage.setItem('favoritos', JSON.stringify(favoritos))}
- }
+// function handlerFav(id) {
+//   if (favoritos.includes(id)) {
+//      favoritos = favoritos.filter(e => e !== id)
+//      localStorage.setItem('favoritos', JSON.stringify(favoritos))}
+//      else {
+//      favoritos.push(id)
+//      localStorage.setItem('favoritos', JSON.stringify(favoritos))}
+//  }
 
+/* <button class="fav" id="${eventos.name}" onclick="handlerFav('${eventos.id}')"><img class="fav"src="https://static.vecteezy.com/system/resources/previews/001/189/166/non_2x/star-png.png"></button>  */

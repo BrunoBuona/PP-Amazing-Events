@@ -23,7 +23,6 @@ fetch('https://mh-amazing.herokuapp.com/amazing')
 function crearCheckbox(eventos, contenedor) {
   let fn = eventos => eventos.category
   let categorias = new Set(eventos.filter(fn).map(fn))
-  console.log(categorias)
   categorias.forEach(par => {
     contenedor.innerHTML += `
     <label class="form-check-label" for="${par}">

@@ -10,17 +10,17 @@ fetch("https://mh-amazing.herokuapp.com/amazing")
   .then((data) => data.json())
   .then((data) => {
     // Data Storage
-    let eventos = data.events; 
-    let fechaActual = data.date; 
+    let eventos = data.events;
+    let fechaActual = data.date;
     // Filtros
     eventosFuturos = eventos.filter((objeto) => objeto.date > fechaActual);
-    eventosPasados = eventos.filter((objeto) => objeto.date < fechaActual); 
+    eventosPasados = eventos.filter((objeto) => objeto.date < fechaActual);
     // Funciones ejecutadas
     logicaTablaUno();
     stats(eventosFuturos, 'estimate', $filaDos)
     stats(eventosPasados, 'assistance', $filaTres)
-})
-  .catch((error) => console.log(error)); 
+  })
+  .catch((error) => console.log(error));
 
 // FUNCTIONS
 function crearTablaUno(contenedor, obj1, obj2, obj3) {
@@ -39,8 +39,8 @@ function crearTablaDos(array, contenedor) {
       `
       <tr >
           <td >${element.category}</td>
-          <td >${element.gain}</td>
-          <td >${element.prom}%</td>     
+          <td >${element.ganancia}</td>
+          <td >${element.promedio}%</td>     
       </tr>
       `
   })
@@ -60,34 +60,34 @@ function logicaTablaUno() {
   crearTablaUno($filaUno, menorAsistencia, mayorAsistencia, mayorCapacidad);
 }
 
-function stats(time,property,contenedor) {
-  time.map(event => {
-    event.gain = event[property] * event.price
-    event.percent = (100 * event[property] / event.capacity).toFixed(1)
+function stats(fechaEvento, propiedad, contenedor) {
+  fechaEvento.map(evento => {
+    evento.ganancia = evento[propiedad] * evento.price
+    evento.percent = (100 * evento[propiedad] / evento.capacity).toFixed(0)
   })
-  let categories = Array.from(new Set(time.map(event => event.category)))
+  let categories = Array.from(new Set(fechaEvento.map(evento => evento.category)))
   let stats = categories.map(cat => {
-    let filter = time.filter(event => event.category === cat)
-    return reduceStats(filter, property)
+    let filter = fechaEvento.filter(evento => evento.category === cat)
+    return acumulador(filter, propiedad)
   })
   crearTablaDos(stats, contenedor)
 }
 
-function reduceStats(array, prop){
-  let initialStat = {
+function acumulador(array, propiedad) {
+  let starterValue = {
     category: "",
-    gain: 0,
+    ganancia: 0,
     capacity: 0,
-    [prop]: 0
+    [propiedad]: 0
   }
-  let stats = array.reduce((element1, element2) => {
+  let stats = array.reduce((e1, e2) => {
     return {
-      category: element2.category,
-      gain: element1.gain + element2.gain,
-      capacity: element1.capacity + element2.capacity,
-      [prop]: element1[prop] + element2[prop] // el valor interno de la propiedad
+      category: e2.category,
+      ganancia: e1.ganancia + e2.ganancia,
+      capacity: e1.capacity + e2.capacity,
+      [propiedad]: e1[propiedad] + e2[propiedad] // el valor interno de la propiedad
     }
-  }, initialStat)
-  stats.prom = (100 * stats[prop] / stats.capacity).toFixed(1)
+  }, starterValue)
+  stats.promedio = (100 * stats[propiedad] / stats.capacity).toFixed(0)
   return stats
 }
