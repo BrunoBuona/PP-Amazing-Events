@@ -5,10 +5,10 @@ const $categorys = document.getElementById("category-js");
 let eventos;
 let fecha;
 let future;
-fetch('https://amazing-events.herokuapp.com/api/events')
+fetch('https://mh-amazing.herokuapp.com/amazing')
   .then(data => data.json())
   .then(data => {
-    fecha = data.currentDate
+    fecha = data.date
     eventos = data.events;
     future = eventos.filter((event) => event.date > fecha);
     crearCheckbox(future, $categorys)
@@ -22,7 +22,6 @@ fetch('https://amazing-events.herokuapp.com/api/events')
 function crearCheckbox(eventos, contenedor) {
   let fn = eventos => eventos.category
   let categorias = new Set(eventos.filter(fn).map(fn))
-  console.log(categorias)
   categorias.forEach(par => {
     contenedor.innerHTML += `
     <label class="form-check-label" for="${par}">
@@ -42,7 +41,7 @@ function crearCard(eventos) {
     <h5 class="card-title">${eventos.name}</h5>
     <p class="card-text">${eventos.description}</p>
     <a class="btn btn-dark">U$D ${eventos.price}</a>
-    <a href="./onlycard.html?id=${eventos._id}" class="btn btn-danger">See more</a>
+    <a href="./onlycard.html?id=${eventos.id}" class="btn btn-danger">See more</a>
     </div> 
     `
   return div

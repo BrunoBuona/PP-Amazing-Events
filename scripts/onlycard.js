@@ -71,10 +71,10 @@ function idPrinter2(i, container) {
       }
 let fecha;
 let eventos;
-fetch('https://amazing-events.herokuapp.com/api/events')
+fetch('https://mh-amazing.herokuapp.com/amazing')
     .then( data => data.json() )
     .then( data => {
-        fecha = data.currentDate
+        fecha = data.date
         eventos = data.events;
         printid()
     } )
@@ -82,7 +82,7 @@ fetch('https://amazing-events.herokuapp.com/api/events')
     
   function printid(){
   let theId = location.search.slice(4)
-  let filtro = eventos.find(e => e._id === theId)
+  let filtro = eventos.find(e => e.id === theId)
   if(filtro.date < fecha){
     idPrinter(filtro, onlycard2)
 }

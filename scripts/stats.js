@@ -1,47 +1,53 @@
-let $tablas = document.getElementById("tablasJs");
+// DOM
+let $filaUno = document.getElementById("filaUno")
+let $filaDos = document.getElementById("filaDos")
+let $filaTres = document.getElementById("filaTres")
+
 let eventosFuturos;
 let eventosPasados;
-fetch("https://amazing-events.herokuapp.com/api/events")
+// API
+fetch("https://mh-amazing.herokuapp.com/amazing")
   .then((data) => data.json())
   .then((data) => {
-    let eventos = data.events; // Esto no se usa rey.
-    let fechaActual = data.currentDate; // Esto tampoco se usa rey
-    eventosFuturos = eventos.filter((objeto) => objeto.date > fechaActual); // eto si | array
-    eventosPasados = eventos.filter((objeto) => objeto.date < fechaActual); // eto si | array
+    // Data Storage
+    let eventos = data.events; 
+    let fechaActual = data.date; 
+    // Filtros
+    eventosFuturos = eventos.filter((objeto) => objeto.date > fechaActual);
+    eventosPasados = eventos.filter((objeto) => objeto.date < fechaActual); 
+    // Funciones ejecutadas
     logicaTablaUno();
-    logicaTablaDos(eventosFuturos);
-  })
-  .catch((error) => console.log(error));
+    stats(eventosFuturos, 'estimate', $filaDos)
+    stats(eventosPasados, 'assistance', $filaTres)
+})
+  .catch((error) => console.log(error)); 
 
-// COMPONENTES TABLA 1  ||  Eventos del Pasado
+// FUNCTIONS
 function crearTablaUno(contenedor, obj1, obj2, obj3) {
   contenedor.innerHTML += `
-  <thead class="table-dark">
-  <tr>
-    <th colspan="3">Event statistics</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td class="semibold">
-      Events with the highest percentage of attendance
-    </td>
-    <td class="semibold">
-      Events with the lowest percentage of attendance
-    </td>
-    <td class="semibold">Events with larger capacity</td>
-  </tr>
   <tr>
     <td>${obj1.name}</td> 
     <td>${obj2.name}</td>
     <td>${obj3.name}</td>
   </tr>
-</tbody>
 `;
 }
 
+function crearTablaDos(array, contenedor) {
+  array.forEach(element => {
+    contenedor.innerHTML +=
+      `
+      <tr >
+          <td >${element.category}</td>
+          <td >${element.gain}</td>
+          <td >${element.prom}%</td>     
+      </tr>
+      `
+  })
+}
+
 function logicaTablaUno() {
-    eventosPasados.map((objeto) => {
+  eventosPasados.map((objeto) => {
     objeto.porcentajeAsistencia = 100 * (objeto.assistance / objeto.capacity);
   });
   // SORT'S
@@ -51,128 +57,37 @@ function logicaTablaUno() {
   let menorAsistencia = asistenciaOrdenada[0];
   let mayorAsistencia = asistenciaOrdenada[asistenciaOrdenada.length - 1];
   let mayorCapacidad = capacidadOrdenada[capacidadOrdenada.length - 1];
-  crearTablaUno($tablas, menorAsistencia, mayorAsistencia, mayorCapacidad);
+  crearTablaUno($filaUno, menorAsistencia, mayorAsistencia, mayorCapacidad);
 }
 
-// COMPONENTES TABLA 2 || Eventos del Futuro
-function crearTablaDos(contenedor, cat) {
-  contenedor.innerHTML += `
-   <thead class="table-dark">
-          <tr>
-            <th colspan="3">Upcoming events statistics by category</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="semibold">Categories</td>
-            <td class="semibold">Revenues</td>
-            <td class="semibold">Percentage of attendance</td>
-          </tr>
-        <tr>
-          <td>${cat[0]}</td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>${cat[1]}</td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>${cat[2]}</td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>${cat[3]}</td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>${cat[4]}</td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>${cat[5]}</td>
-          <td></td>
-          <td></td>
-        </tr>
-        </tbody>
-      `;
+function stats(time,property,contenedor) {
+  time.map(event => {
+    event.gain = event[property] * event.price
+    event.percent = (100 * event[property] / event.capacity).toFixed(1)
+  })
+  let categories = Array.from(new Set(time.map(event => event.category)))
+  let stats = categories.map(cat => {
+    let filter = time.filter(event => event.category === cat)
+    return reduceStats(filter, property)
+  })
+  crearTablaDos(stats, contenedor)
 }
 
-function logicaTablaDos(eventosFuturos) {
-  let fn = eventosFuturos => eventosFuturos.category
-  let categorias = Array.from(new Set(eventosFuturos.map(fn))) // cat
-  eventosFuturos.map((objeto) => {objeto.gananciaEstimada = (objeto.price * objeto.estimate)});
-
-// esto no funciona ;)
-  // let gananciaEstimada2 = [...eventosFuturos].reduce((a, b) => {
-  // return{
-  //   category: b.category,
-  //   gananciaCategoria: a.gananciaEstimada+b.gananciaEstimada
-  // }}
-  
-  crearTablaDos($tablas, categorias)
-
-}
-
-// COMPONENTES TABLA 3  ||  Eventos del Pasado
-
-function crearTablaTres(contenedor, cat) {
-  contenedor.innerHTML += `
-<thead class="table-dark">
-          <tr>
-            <th colspan="3">Past events by category</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="semibold">Categories</td>
-            <td class="semibold">Revenues</td>
-            <td class="semibold">Percentage of attendance</td>
-          </tr>
-          <tr>
-            <td>${cat[0]}</td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>${cat[1]}</td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>${cat[2]}</td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>${cat[3]}</td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>${cat[4]}</td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>${cat[5]}</td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>${cat[6]}</td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>${cat[7]}</td>
-            <td></td>
-            <td></td>
-          </tr>
-        </tbody>
-  `;
+function reduceStats(array, prop){
+  let initialStat = {
+    category: "",
+    gain: 0,
+    capacity: 0,
+    [prop]: 0
+  }
+  let stats = array.reduce((element1, element2) => {
+    return {
+      category: element2.category,
+      gain: element1.gain + element2.gain,
+      capacity: element1.capacity + element2.capacity,
+      [prop]: element1[prop] + element2[prop] // el valor interno de la propiedad
+    }
+  }, initialStat)
+  stats.prom = (100 * stats[prop] / stats.capacity).toFixed(1)
+  return stats
 }

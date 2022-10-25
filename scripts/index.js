@@ -4,7 +4,8 @@ const $categorys = document.getElementById("category-js");
 
 // Async
 let eventos;
-fetch('https://amazing-events.herokuapp.com/api/events')
+let favoritos =  []
+fetch('https://mh-amazing.herokuapp.com/amazing')
   .then(data => data.json())
   .then(data => {
     eventos = data.events;
@@ -38,7 +39,8 @@ function crearCard(eventos) {
     <h5 class="card-title">${eventos.name}</h5>
     <p class="card-text">${eventos.description}</p>
     <a class="btn btn-dark">U$D ${eventos.price}</a>
-    <a href="./pages/onlycard.html?id=${eventos._id}" class="btn btn-danger">See more</a>
+    <a href="./pages/onlycard.html?id=${eventos.id}" class="btn btn-danger">See more</a>
+    <button class="fav" id="${eventos.name}" onclick="handlerFav('${eventos.id}')"><img class="fav"src="https://static.vecteezy.com/system/resources/previews/001/189/166/non_2x/star-png.png"></button> 
     </div> 
     `
   return div
@@ -64,4 +66,13 @@ function filtrar() {
   let filtradosPorSearch = filtradosPorCategoria.filter(iteracion => iteracion.name.toLowerCase().includes($search.value.toLowerCase()))
   imprimirCards(filtradosPorSearch, $cards)
 }
+
+function handlerFav(id) {
+  if (favoritos.includes(id)) {
+     favoritos = favoritos.filter(e => e !== id)
+     localStorage.setItem('favoritos', JSON.stringify(favoritos))} 
+     else {
+     favoritos.push(id)
+     localStorage.setItem('favoritos', JSON.stringify(favoritos))}
+ }
 
