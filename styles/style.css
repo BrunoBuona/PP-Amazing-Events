@@ -72,6 +72,7 @@ tbody > tr > td, th {
   background-size: cover;
   background-color: #728cff;
   position: center;
+  text-align: center;
 }
 .banner > h2 {
   color: rgb(255, 255, 255);
@@ -345,7 +346,9 @@ input[type="search"]::-webkit-search-cancel-button {
   .nav-container {
     flex-wrap: wrap;
   }
-
+  .category-container{
+    flex-direction: column;
+  }
   .footer {
     flex-direction: column;
     height: auto;
@@ -358,6 +361,9 @@ input[type="search"]::-webkit-search-cancel-button {
   .reduced {
     font-size: 38px !important;
   }
+}
+.banner > h2{
+  font-size: 30px;
 }
 
 /* Media Query 2000px */
