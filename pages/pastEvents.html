@@ -1,67 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="shortcut icon"
+      href="../assets/img/favicon.ico"
+      type="image/x-icon"
+    />
+    <title>AE | Past Events</title>
 
-<head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="shortcut icon" href="../assets/img/favicon.ico" type="image/x-icon" />
-  <title>AE | Past Events</title>
+    <meta name="description" content="Amazing Events Web" />
+    <meta name="author" content="Bruno Buonassisa" />
 
-  <meta name="description" content="Amazing Events Web" />
-  <meta name="author" content="Bruno Buonassisa" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap"
+      rel="stylesheet"
+    />
+    <link href="../styles/style.css" rel="stylesheet" />
+  </head>
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap" rel="stylesheet" />
-  <link href="../styles/style.css" rel="stylesheet" />
-</head>
-
-<body>
-  <header class="header-container">
-    <div class="logo-container">
-      <img class="logo" src="../assets/img/logo.png" alt="Logo" />
-    </div>
-    <nav class="nav-container">
-      <a href="../index.html" class="inactive">Home</a>
-      <a href="./upcoEvents.html" class="inactive">Upcoming Events</a>
-      <a href="#" class="active">Past Events</a>
-      <a href="./contact.html" class="inactive">Contact</a>
-      <a href="./stats.html" class="inactive">Stats</a>
-    </nav>
-  </header>
-  <div class="banner">
-    <h2>PAST EVENTS</h2>
-  </div>
-  <main class="main-container">
-    <div class="filters">
-    <div id="category-js" class="category-container">
-
-    </div>
-    <div class="search-bar">
-      <div class="search">
-        <input class="form-control" type="search" id="search-js" placeholder="Search" aria-label="Search" />
+  <body>
+    <header class="header-container">
+      <div class="logo-container">
+        <img class="logo" src="../assets/img/logo.png" alt="Logo" />
       </div>
+      <nav class="nav-container">
+        <a href="../index.html" class="inactive">Home</a>
+        <a href="./upcoEvents.html" class="inactive">Upcoming Events</a>
+        <a href="#" class="active">Past Events</a>
+        <a href="./contact.html" class="inactive">Contact</a>
+        <a href="./stats.html" class="inactive">Stats</a>
+      </nav>
+    </header>
+    <div class="banner">
+      <h2>PAST EVENTS</h2>
     </div>
-  </div>
-    <div id="contenedor-js" class="cards-container">
-      <!--CARDS / JS -->
-    </div>
-  </main>
-  <footer class="footer">
-    <div class="social-container">
-      <a href="#"><img class="social-icons" src="../assets/img/instagram.png" alt="Instagram" /></a>
-      <a href="#"><img class="social-icons" src="../assets/img/facebook.png" alt="Facebook" /></a>
-      <a href="#"><img class="social-icons" src="../assets/img/whatsapp.png" alt="Whatsapp" /></a>
-    </div>
-    <div class="title-footer">
-      <h2>Cohort 35/36</h2>
-    </div>
-  </footer>
-  <script src="../scripts/data.js"></script>
-  <script src="../scripts/pastE.js"></script>
-</body>
+    <main class="main-container">
+      <div class="filters">
+        <div id="category-js" class="category-container"></div>
+        <div class="search-bar">
+          <div class="search">
+            <input
+              class="form-control"
+              type="search"
+              id="search-js"
+              placeholder="Search"
+              aria-label="Search"
+            />
+          </div>
+        </div>
+      </div>
+      <div id="contenedor-js" class="cards-container">
+        <!--CARDS / JS -->
+      </div>
+    </main>
+    <footer class="footer">
+      <div class="social-container">
+        <a href="#"
+          ><img
+            class="social-icons"
+            src="../assets/img/instagram.png"
+            alt="Instagram"
+        /></a>
+        <a href="#"
+          ><img
+            class="social-icons"
+            src="../assets/img/facebook.png"
+            alt="Facebook"
+        /></a>
+        <a href="#"
+          ><img
+            class="social-icons"
+            src="../assets/img/whatsapp.png"
+            alt="Whatsapp"
+        /></a>
+      </div>
+      <div class="title-footer">
+        <h2>Cohort 35/36</h2>
+      </div>
+    </footer>
 
+    <script src="../scripts/pastE.js"></script>
+  </body>
 </html>

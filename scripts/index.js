@@ -1,86 +1,75 @@
-// ================================================================== //
-// =========================== DOM ================================== //
+const $cards = document.getElementById("contenedor-js");
+const $search = document.getElementById("search-js");
+const $categorys = document.getElementById("category-js");
 
-let cardsJs = document.getElementById("contenedor-js");
-let buscador = document.getElementById("search-js")
-let checkbox = document.getElementById("category-js")
+// Async
+let eventos;
+// let favoritos =  []
+fetch('https://mh-amazing.herokuapp.com/amazing')
+  .then(data => data.json())
+  .then(data => {
+    eventos = data.events;
+    crearCheckbox(eventos, $categorys)
+    imprimirCards(eventos, $cards)
+    $search.addEventListener('keyup', filtrar)
+    $categorys.addEventListener('change', filtrar)
+  })
+  .catch(error => console.log(error));
 
-// ================================================================== //
-// =================== IMPRESION DE CARDS  ========================== //
+// DOM | CheckBox
+function crearCheckbox(eventos, contenedor) {
+  let fn = eventos => eventos.category
+  let categorias = new Set(eventos.map(fn))
+  categorias.forEach(par => {
+    contenedor.innerHTML += `
+    <label class="form-check-label" for="${par}">
+    <input class="form-check-input" value="${par}" type="checkbox" role="switch" id="${par}">${par}
+    </label>
+    `
+  })
+}
 
-function imprimir (array,contenedor){
-  array.forEach (ex => {contenedor.innerHTML += `
-    <article class="card cardD" style="width: 18rem">
-    <img src="${ex.image}" class="card-img-top" alt="${ex.name}"/> 
+function crearCard(eventos) {
+  let div = document.createElement('DIV')
+  div.classList = 'card cardD'
+  div.style = 'width: 14rem'
+  div.innerHTML += `
+    <img src="${eventos.image}" class="card-img-top" alt="${eventos.name}"/> 
     <div class="card-body">
-    <h5 class="card-title">${ex.name}</h5>
-    <p class="card-text">${ex.description}</p>
-    <a class="btn btn-dark">U$D ${ex.price}</a>
-    <a href="./pages/onlycard.html?id=${ex._id}" class="btn btn-danger">See more</a>
+    <h5 class="card-title">${eventos.name}</h5>
+    <p class="card-text">${eventos.description}</p>
+    <a class="btn btn-dark">U$D ${eventos.price}</a>
+    <a href="./pages/onlycard.html?id=${eventos.id}" class="btn btn-danger">See more</a>
     </div> 
-  </article>`})};
-
-imprimir(events,cardsJs)
-
-// ================================================================== //
-// ====================== FUNCION DE RE IMPRESION =================== //
-
-function actualizacionDeImpresion(contenedor, array) {
+    `
+  return div
+}
+function imprimirCards(eventos, contenedor) {
   contenedor.innerHTML = ''
-  imprimir(array, contenedor)
-  if(array == listChecked){
+  if (eventos.length > 0) {
+    let fragment = document.createDocumentFragment()
+    eventos.forEach(eventos => fragment.appendChild(crearCard(eventos)))
+    contenedor.appendChild(fragment)
   }
-  else{
-    errorAtSearch(array, contenedor)}
-}
-
-// ================================================================== //
-// ====================== FUNCION DE ERROR ========================== //
-
-function errorAtSearch(array, contenedor){
-  if(array <= 0){
-    contenedor.innerHTML=`<h2>Sin coincidencias</h2>`
+  else {
+    contenedor.innerHTML = `<h2>Sin coincidencias...</h2>`
   }
 }
 
-// ================================================================== //
-// =================== IMPRESION DE CATEGORIAS ====================== //
+function filtrar() {
+  let checked = [...document.querySelectorAll('input[type="checkbox"]:checked')].map(ele => ele.value)
+  let filtradosPorCategoria = eventos.filter(eventos => checked.includes(eventos.category) || checked.length == 0)
+  let filtradosPorSearch = filtradosPorCategoria.filter(iteracion => iteracion.name.toLowerCase().includes($search.value.toLowerCase()))
+  imprimirCards(filtradosPorSearch, $cards)
+}
 
-let categorias = Array.from(new Set(events.map(objeto => objeto.category)))
-categorias.forEach(nombreCategoria => {
-  checkbox.innerHTML+=
-    `<div class="form-check form-switch">
-    <input class="form-check-input" id="${nombreCategoria}" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-    <label class="form-check-label" for="flexSwitchCheckDefault">${nombreCategoria}</label>
-    </div>`})
+// function handlerFav(id) {
+//   if (favoritos.includes(id)) {
+//      favoritos = favoritos.filter(e => e !== id)
+//      localStorage.setItem('favoritos', JSON.stringify(favoritos))}
+//      else {
+//      favoritos.push(id)
+//      localStorage.setItem('favoritos', JSON.stringify(favoritos))}
+//  }
 
-// ================================================================== //
-// =============== BARRA DE NAVEGACION (EVENTO) ===================== //
-
-buscador.addEventListener("input", e => {
-  elementosFiltrados = events.filter(names => names.name.toLowerCase().includes(e.target.value.toLowerCase()))
-  actualizacionDeImpresion(cardsJs, elementosFiltrados)
-  }
-) 
-
-// ================================================================== //
-// ===================== CHECKBOX (EVENTO) ========================== //
-
-let listChecked = []
-checkbox.addEventListener(`change`, e=>{
-    if (e.target.checked) {
-        listChecked = listChecked.concat(events.filter(evento=> evento.category.toLowerCase().includes(e.target.id.toLowerCase())))
-        actualizacionDeImpresion(cardsJs, listChecked)
-      }
-
-   else if(!e.target.checked){
-        listChecked = listChecked.filter(evento => !evento.category.toLowerCase().includes( e.target.id.toLowerCase() ) )
-        actualizacionDeImpresion(cardsJs, listChecked)
-      }
-   if (listChecked.length === 0)
-   {
-    imprimir(events,cardsJs)
-   }})
-
-
-
+/* <button class="fav" id="${eventos.name}" onclick="handlerFav('${eventos.id}')"><img class="fav"src="https://static.vecteezy.com/system/resources/previews/001/189/166/non_2x/star-png.png"></button>  */
