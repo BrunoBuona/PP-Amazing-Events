@@ -5,7 +5,7 @@ const $categorys = document.getElementById("category-js");
 // Async
 let eventos;
 // let favoritos =  []
-fetch('https://mh-amazing.herokuapp.com/amazing')
+fetch("https://mindhub-xj03.onrender.com/api/amazing")
   .then(data => data.json())
   .then(data => {
     eventos = data.events;

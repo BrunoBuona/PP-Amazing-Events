@@ -5,7 +5,7 @@ const $categorys = document.getElementById("category-js");
 let eventos;
 let fecha;
 let future;
-fetch('https://mh-amazing.herokuapp.com/amazing')
+fetch("https://mindhub-xj03.onrender.com/api/amazing")
   .then(data => data.json())
   .then(data => {
     fecha = data.date

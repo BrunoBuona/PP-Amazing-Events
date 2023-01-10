@@ -1,90 +1,85 @@
 // DOM
-let $filaUno = document.getElementById("filaUno")
-let $filaDos = document.getElementById("filaDos")
-let $filaTres = document.getElementById("filaTres")
+let $filaUno = document.getElementById("filaUno");
+let $filaDos = document.getElementById("filaDos");
+let $filaTres = document.getElementById("filaTres");
 
+// Declaraciones
 let eventosFuturos;
 let eventosPasados;
+
 // API
-fetch("https://mh-amazing.herokuapp.com/amazing")
+fetch("https://mindhub-xj03.onrender.com/api/amazing")
   .then((data) => data.json())
   .then((data) => {
     // Data Storage
     let eventos = data.events;
-    let fechaActual = data.date;
+    let fechaActual = data.currentDate;
+
     // Filtros
     eventosFuturos = eventos.filter((objeto) => objeto.date > fechaActual);
     eventosPasados = eventos.filter((objeto) => objeto.date < fechaActual);
+
     // Funciones ejecutadas
     logicaTablaUno();
-    stats(eventosFuturos, 'estimate', $filaDos)
-    stats(eventosPasados, 'assistance', $filaTres)
+    logicaTablas(eventosFuturos, "estimate", $filaDos);
+    logicaTablas(eventosPasados, "assistance", $filaTres);
   })
   .catch((error) => console.log(error));
 
-// FUNCTIONS
-function crearTablaUno(contenedor, obj1, obj2, obj3) {
-  contenedor.innerHTML += `
-  <tr>
-    <td>${obj1.name}</td> 
-    <td>${obj2.name}</td>
-    <td>${obj3.name}</td>
-  </tr>
-`;
-}
-
-function crearTablaDos(array, contenedor) {
-  array.forEach(element => {
-    contenedor.innerHTML +=
-      `
-      <tr >
-          <td >${element.category}</td>
-          <td >${element.ganancia}</td>
-          <td >${element.promedio}%</td>     
-      </tr>
-      `
-  })
+function printTableOne(container, prop2, prop1, prop3) {
+  // El container lo traigo por parámetro para que sea dinámico, al igual que las propiedades.
+  container.innerHTML += `
+    <tr>
+      <td>${prop1[0].name} with ${prop1[0].percentageAssitance.toFixed(2)}%.</td>
+      <td>${prop2[0].name} with ${prop2[0].percentageAssitance.toFixed(2)}%.</td>
+      <td>${prop3[0].name} with ${prop3[0].capacity.toLocaleString()}.</td>
+    </tr>
+    `;
 }
 
 function logicaTablaUno() {
-  eventosPasados.map((objeto) => {
-    objeto.porcentajeAsistencia = 100 * (objeto.assistance / objeto.capacity);
+  // Agrego una propiedad nueva al array de eventos pasados
+  eventosPasados.map((i) => {
+    i.percentageAssitance = (i.assistance / i.capacity) * 100;
   });
-  // SORT'S
-  let asistenciaOrdenada = [...eventosPasados].sort((e1, e2) => e1.porcentajeAsistencia - e2.porcentajeAsistencia); // Ordenador
-  let capacidadOrdenada = [...eventosPasados].sort((e1, e2) => e1.capacity - e2.capacity); // Ordenador
-  // POINTS
-  let menorAsistencia = asistenciaOrdenada[0];
-  let mayorAsistencia = asistenciaOrdenada[asistenciaOrdenada.length - 1];
-  let mayorCapacidad = capacidadOrdenada[capacidadOrdenada.length - 1];
-  crearTablaUno($filaUno, menorAsistencia, mayorAsistencia, mayorCapacidad);
+
+  // Ordeno los arrays de menor a mayor y mayor a menor
+  let minorAssistance = [...eventosPasados].sort(
+    (a, b) => a.percentageAssitance - b.percentageAssitance
+  );
+  let majorAssistance = [...eventosPasados].sort(
+    (a, b) => b.percentageAssitance - a.percentageAssitance
+  );
+  // Esto es para que me ordene por mayor capacidad.
+  let majorCapacity = [...eventosPasados].sort(
+    (a, b) => b.capacity - a.capacity
+  );
+  // Llamo a la función que imprime la tabla
+  printTableOne($filaUno, minorAssistance, majorAssistance, majorCapacity);
 }
 
-function stats(fechaEvento, propiedad, contenedor) {
-  fechaEvento.map(evento => {evento.ganancia = evento[propiedad] * evento.price})
-  let categories = Array.from(new Set(fechaEvento.map(evento => evento.category)))
-  let stats = categories.map(cat => {
-    let filter = fechaEvento.filter(evento => evento.category === cat)
-    return acumulador(filter, propiedad)
-  })
-  crearTablaDos(stats, contenedor)
+function printTables(container, array) {
+  // Esta función imprime la tabla de los eventos futuros y pasados
+  array.forEach((e) => {
+    // El container lo traigo por parámetro para que sea dinámico, al igual que las propiedades.
+    container.innerHTML += `
+    <tr>
+      <td>${e.category}</td>
+      <td>$${e.earn.toLocaleString()}</td>
+      <td>${e.percentageAssitance.toFixed(2)}%</td>
+    </tr>
+    `;
+  });
 }
-
-function acumulador(array, propiedad) {
-  let starterValue = {
-    category: "",
-    ganancia: 0,
-    capacity: 0,
-    [propiedad]: 0
-  }
-  let stats = array.reduce((e1, e2) => {
-    return {
-      category: e2.category,
-      ganancia: e1.ganancia + e2.ganancia,
-      capacity: e1.capacity + e2.capacity,
-      [propiedad]: e1[propiedad] + e2[propiedad] // el valor interno de la propiedad
-    }
-  }, starterValue)
-  stats.promedio = (100 * stats[propiedad] / stats.capacity).toFixed(0)
-  return stats
+function logicaTablas(typeEvent, prop, container) {
+  // El metodo map me permite agregar una propiedad nueva al array que me llega
+  eventosFuturos.map((i) => {
+    i.percentageAssitance = (i.estimate / i.capacity) * 100;
+  });
+  // Esto agrega dos propiedades nuevas al array que me llega
+  typeEvent.map((e) => {
+    e.earn = e[prop] * e.price;
+  });
+  // Llamo a la función que imprime la tabla
+  printTables(container, typeEvent);
 }
